@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Artur Trzop (c) 2012
+// Coderetreat PK
+// Cracow University of Technology, Faculty of Mechanical Engineering
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
