@@ -45,12 +45,17 @@ namespace GameOfLife
         private Queue<Cell> _nextStateKillLife = new Queue<Cell>();
 
         /// <summary>
-        /// Temporary cell used to many situations
+        /// Temporary cell used to many situations.
         /// </summary>
         private Cell tmpCell = new Cell();
 
         /// <summary>
-        /// Size of board in vertical. Horizontal size is 4 times bigger. Default 5.
+        /// Counter of method run at one stage.
+        /// </summary>
+        public int CounterMethod_GiveLifeToNeighboursIfPossible { get; private set; }
+
+        /// <summary>
+        /// Size of board in vertical. Horizontal size is 4 times bigger than AreaSize.
         /// </summary>
         public int AreaSize 
         {
@@ -65,6 +70,7 @@ namespace GameOfLife
         public Board()
         {
             AreaSize = 5;
+            CounterMethod_GiveLifeToNeighboursIfPossible = 0;
         }
 
         /// <summary>
@@ -169,6 +175,9 @@ namespace GameOfLife
         /// </summary>
         public void NextState()
         {
+            // set to zero every time when we run NextState method
+            CounterMethod_GiveLifeToNeighboursIfPossible = 0;
+
             int tmpNeighbours = 0;
             foreach (Cell cell in _currentState)
             {
@@ -183,7 +192,7 @@ namespace GameOfLife
                 // clear temp HashSet used in above method
                 _tmpCheckedCell.Clear();
             }
-            
+
             // kill cells
             while (_nextStateKillLife.Count > 0)
             {
@@ -227,7 +236,7 @@ namespace GameOfLife
                 Thread.Sleep(timeSleep);                
             }
         }
-
+        
         /// <summary>
         /// Check if dead neighbours can be born. Only dead cells which had 3 life neighbours can be born.
         /// </summary>
@@ -235,6 +244,8 @@ namespace GameOfLife
         /// <param name="y">y</param>
         private void GiveLifeToNeighboursIfPossible(int x, int y)
         {
+            CounterMethod_GiveLifeToNeighboursIfPossible++;
+
             // 1,1      2,1     3,1
             // 1,2      2,2     3,2
             // 1,3      2,3     3,3
@@ -281,17 +292,16 @@ namespace GameOfLife
                     default:
                         throw new Exception("Wrong variable i.");                        
                 }
-                
-                // negation cause we checking if only dead cell can be born
-                // and we checking is cell allready checked
-                bool condition = !IsCellExist(tmpX, tmpY) && !_tmpCheckedCell.Any(item => item.X == tmpX && item.Y == tmpY);
 
-                // mark tmpX tmpY as cell that we allready checked
+                // checking is cell already checked and negative of cell because checking if only dead cell can be born                
+                bool condition = !_tmpCheckedCell.Any(item => item.X == tmpX && item.Y == tmpY) && !IsCellExist(tmpX, tmpY);
+
+                // mark tmpX tmpY as cell that we already checked
                 _tmpCheckedCell.Add(new Cell() { X = tmpX, Y = tmpY });
 
                 // condition is above because we must add current temp cell to _tmpCheckedCell cause we use it in next recurrence step
                 if (condition)
-                {
+                {                    
                     // count neighbours
                     neighbours = CountNeighbours(tmpX, tmpY);
                     

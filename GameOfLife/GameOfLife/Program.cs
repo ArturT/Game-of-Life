@@ -18,7 +18,7 @@ namespace GameOfLife
             Board b = new Board();
             
             // set your own size of board
-            b.AreaSize = 5;
+            b.AreaSize = 7;
 
 
             // Set cells coordinates here
@@ -59,7 +59,22 @@ namespace GameOfLife
             b.AddCell(-10, 7);
 
 
-            
+
+            // some random cells
+            Random random = new Random();
+            int randomX, randomY;
+
+            // 50 random cells
+            for (int i = 0; i < 50; i++)
+            {
+                randomX = random.Next(-10, 20);
+                randomY = random.Next(-10, 20);
+
+                b.AddCell(randomX, randomY);
+            }
+                        
+
+
             //// display board
             //b.PrintCurrentBoard();
 
@@ -78,8 +93,17 @@ namespace GameOfLife
 
 
             // run game in infinity loop
-            b.PlayGame(timeSleep: 100, displayCurrentCoordinates: false);
-            
+            //b.PlayGame(timeSleep: 250, displayCurrentCoordinates: false);
+
+
+
+            // shows amount of cells at step
+            for (int i = 0; i < 100; i++)
+            {
+                b.NextState();
+                Console.WriteLine("Step " + i + ", Cells on board: " + b.CountCells() + ", Recursion: " + b.CounterMethod_GiveLifeToNeighboursIfPossible);
+            }
+
 
             Console.ReadKey();
         }
