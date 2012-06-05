@@ -42,7 +42,7 @@ namespace GameOfLife
         /// <summary>
         /// Current state of cells on board.
         /// </summary>
-        private HashSet<Cell> _currentState = new HashSet<Cell>();
+        protected HashSet<Cell> _currentState = new HashSet<Cell>();
 
         /// <summary>
         /// Temporary HashSet used to checking if new cell should be born.
@@ -67,26 +67,18 @@ namespace GameOfLife
         /// <summary>
         /// Counter of method run at one stage.
         /// </summary>
-        public int CounterMethod_GiveLifeToNeighboursIfPossible { get; private set; }
-
-        /// <summary>
-        /// Size of board in vertical. Horizontal size is 4 times bigger than AreaSize.
-        /// </summary>
-        public int AreaSize 
-        {
-            get;
-            set;
+        private int _counterMethod_GiveLifeToNeighboursIfPossible = 0;
+        public int CounterMethod_GiveLifeToNeighboursIfPossible { 
+            get 
+            {
+                return _counterMethod_GiveLifeToNeighboursIfPossible;
+            }
+            private set 
+            {
+                _counterMethod_GiveLifeToNeighboursIfPossible = value;
+            } 
         }
-
-
-        /// <summary>
-        /// Constructor. Set default AreaSize = 5.
-        /// </summary>
-        public Board()
-        {
-            AreaSize = 5;
-            CounterMethod_GiveLifeToNeighboursIfPossible = 0;
-        }
+        
 
         /// <summary>
         /// Add new cell to board if it isn't there.
@@ -136,56 +128,6 @@ namespace GameOfLife
         }
 
         /// <summary>
-        /// Write on console information about coordinates of all cells.
-        /// </summary>
-        public void PrintCurrentStateCoordinates()
-        {
-            Console.WriteLine();
-
-            foreach(Cell cell in _currentState)
-            {
-                Console.WriteLine("X: " + cell.X + ", Y: " + cell.Y);
-            }
-
-            // Why use PadLeft was described in PrintCurrentBoard method.
-            Console.WriteLine("Cells on board: " + Convert.ToString(_currentState.Count).PadLeft(10, '0') + "\n");
-        }
-
-        
-        /// <summary>
-        /// Write on console all cells in visual way.
-        /// </summary>
-        /// <param name="areaSize">Size of board in vertical. Horizontal size is 4 times bigger. If not set then will be use this.AreaSize</param>
-        public void PrintCurrentBoard(int? areaSize = null)
-        {
-            if (areaSize == null)
-                areaSize = this.AreaSize;
-
-            Console.WriteLine();
-
-            for (int i = (int)-areaSize; i < areaSize*2; i++)
-            {
-                for (int j = (int)-areaSize*4; j < areaSize*4; j++)
-                {
-                    if (IsCellExist(j, i))
-                    {
-                        Console.Write("O");
-                    }
-                    else
-                    {
-                        Console.Write("-");                    
-                    }
-                }
-                Console.WriteLine();
-            }
-
-            // Using PadLeft is helping when we rewrite on the console buffor.
-            // (reason of troubles: Console.SetCursorPosition(1, 0) in PlayGame method)
-            // PadLeft rescue us from different number of signs displaying on screen.
-            Console.WriteLine("Cells on board: " + Convert.ToString(_currentState.Count).PadLeft(10, '0') + "\n");
-        }
-
-        /// <summary>
         /// Calculate next state of game and set it as current state.
         /// </summary>
         public void NextState()
@@ -223,35 +165,6 @@ namespace GameOfLife
             }
         }
 
-        /// <summary>
-        /// Play game in infinity loop
-        /// </summary>
-        /// <param name="timeSleep">Milliseconds between next refresh of game state.</param>
-        /// <param name="displayCurrentCoordinates">Default false</param>
-        public void PlayGame(int timeSleep = 100, bool displayCurrentCoordinates = false)
-        {
-            // board after set all cells
-            PrintCurrentBoard();
-            
-            if (displayCurrentCoordinates)
-                PrintCurrentStateCoordinates();
-
-            Thread.Sleep(timeSleep);
-            while (true)
-            {
-                //Console.Clear();
-                Console.SetCursorPosition(1, 0);
-
-                NextState();                
-                PrintCurrentBoard();
-            
-                if (displayCurrentCoordinates)
-                    PrintCurrentStateCoordinates();
-                
-                Thread.Sleep(timeSleep);                
-            }
-        }
-        
         /// <summary>
         /// Check if dead neighbours can be born. Only dead cells which had 3 living neighbours can be born.
         /// </summary>

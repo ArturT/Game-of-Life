@@ -44,6 +44,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Board.cs" />
+    <Compile Include="BoardConsoleVisualizer.cs" />
+    <Compile Include="IBoardVisualizer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

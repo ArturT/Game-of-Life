@@ -14,10 +14,10 @@ namespace GameOfLife
     {
         static void Main(string[] args)
         {
-            // new object of game
-            Board b = new Board();
+            // new object of console game of life
+            BoardConsoleVisualizer b = new BoardConsoleVisualizer(areaSize: 5, timeSleep: 250, displayCurrentCoordinates: false);
             
-            // set your own size of board
+            // set your own size of board in constructor or override it here
             b.AreaSize = 7;
 
 
@@ -67,16 +67,16 @@ namespace GameOfLife
             // 100 random cells
             for (int i = 0; i < 100; i++)
             {
-                randomX = random.Next(-20, 20);
-                randomY = random.Next(-20, 20);
+                randomX = random.Next(-10, 20);
+                randomY = random.Next(-10, 20);
 
                 b.AddCell(randomX, randomY);
             }
-                        
 
 
+            # region RunGameExample1
             //// display board
-            //b.PrintCurrentBoard();
+            //b.DisplayCurrentStateOfBoard();
 
             //// display coordinates of cells
             //b.PrintCurrentStateCoordinates();
@@ -85,25 +85,27 @@ namespace GameOfLife
             //b.NextState();
 
             //// and print board :)
-            //b.PrintCurrentBoard();
+            //b.DisplayCurrentStateOfBoard();
 
             //// pause befor start game 
             //Thread.Sleep(2000);
-            
+            # endregion RunGameExample2
 
 
+            # region RunGameExample2
             // run game in infinity loop
-            b.PlayGame(timeSleep: 250, displayCurrentCoordinates: false);
+            b.PlayGame();
+            # endregion RunGameExample2
 
 
-
-            // shows amount of cells and recursion at step
+            # region RunGameExample3
+            // shows amount of cells and attempts to give life at step
             //for (int i = 0; i < 100; i++)
             //{
             //    b.NextState();
-            //    Console.WriteLine("Step " + i + ", Cells on board: " + b.CountCells() + ", Recursion: " + b.CounterMethod_GiveLifeToNeighboursIfPossible);
+            //    Console.WriteLine("Step " + i + ", Cells on board: " + b.CountCells() + ", Attempts to give life: " + b.CounterMethod_GiveLifeToNeighboursIfPossible);
             //}
-
+            # endregion RunGameExample3
 
 
             Console.ReadKey();
