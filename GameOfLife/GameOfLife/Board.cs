@@ -263,8 +263,7 @@ namespace GameOfLife
 
             // 1,1      2,1     3,1
             // 1,2      2,2     3,2
-            // 1,3      2,3     3,3
-            int neighbours = 0;
+            // 1,3      2,3     3,3            
             int tmpX = 0;
             int tmpY = 0;
             
@@ -307,31 +306,16 @@ namespace GameOfLife
                     default:
                         throw new Exception("Wrong variable i.");                        
                 }
-
-                // checking is cell already checked and negative of cell because checking if only dead cell can be born                
-                bool condition = !_tmpCheckedCell.Contains(new Cell() { X = tmpX, Y = tmpY }) && !IsCellExist(tmpX, tmpY);
+                
+                // checking is cell already checked and negative of cell because checking if only dead cell can be born
+                if (!_tmpCheckedCell.Contains(new Cell() { X = tmpX, Y = tmpY }) && !IsCellExist(tmpX, tmpY) && CountNeighbours(tmpX, tmpY) == 3)
+                { 
+                    // born dead cell
+                    AddCellToNextStateGiveLife(new Cell() { X = tmpX, Y = tmpY });
+                }
 
                 // mark tmpX tmpY as cell that we already checked
                 _tmpCheckedCell.Add(new Cell() { X = tmpX, Y = tmpY });
-
-                // condition is above because we must add current temp cell to _tmpCheckedCell cause we use it in next recurrence step
-                if (condition)
-                {                    
-                    // count neighbours
-                    neighbours = CountNeighbours(tmpX, tmpY);
-                    
-                    if (neighbours > 0)
-                    {
-                        if (neighbours == 3)
-                        {
-                            // born dead cell
-                            AddCellToNextStateGiveLife(new Cell() { X = tmpX, Y = tmpY });
-                        }
-
-                        // cell have more than zero neighbours so we checking theirs neighbours too
-                        GiveLifeToNeighboursIfPossible(tmpX, tmpY);
-                    }
-                }
             }
         }
 
