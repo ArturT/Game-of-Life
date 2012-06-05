@@ -253,7 +253,7 @@ namespace GameOfLife
         }
         
         /// <summary>
-        /// Check if dead neighbours can be born. Only dead cells which had 3 life neighbours can be born.
+        /// Check if dead neighbours can be born. Only dead cells which had 3 living neighbours can be born.
         /// </summary>
         /// <param name="x">x</param>
         /// <param name="y">y</param>
