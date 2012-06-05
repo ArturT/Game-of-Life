@@ -13,10 +13,25 @@ namespace GameOfLife
     /// <summary>
     /// Structure of cell. Contains coordinates X and Y.
     /// </summary>
-    struct Cell
+    public struct Cell
     {
         public int X;
         public int Y;
+
+        public override bool Equals(object obj)
+        {
+            Cell c = (Cell)obj;
+
+            if (X == c.X && Y == c.Y)
+                return true;
+            else
+                return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return string.Format("{0}_{1}", X, Y).GetHashCode();
+        }
     }
 
     /// <summary>
@@ -83,8 +98,8 @@ namespace GameOfLife
             tmpCell.X = x;
             tmpCell.Y = y;
 
-            if (!IsCellExist(x, y))                
-                _currentState.Add(tmpCell);
+            // A HashSet is a collection that contains no duplicate elements   
+            _currentState.Add(tmpCell);
         }
 
         /// <summary>
@@ -108,7 +123,7 @@ namespace GameOfLife
         /// <returns>bool</returns>
         public bool IsCellExist(int x, int y)
         {
-            return _currentState.Any(item => item.X == x && item.Y == y);
+            return _currentState.Contains(new Cell() { X = x, Y = y });
         }
 
         /// <summary>
@@ -212,7 +227,7 @@ namespace GameOfLife
         /// Play game in infinity loop
         /// </summary>
         /// <param name="timeSleep">Milliseconds between next refresh of game state.</param>
-        /// <param name="displayCurrentCoordinates"></param>
+        /// <param name="displayCurrentCoordinates">Default false</param>
         public void PlayGame(int timeSleep = 100, bool displayCurrentCoordinates = false)
         {
             // board after set all cells
@@ -294,7 +309,7 @@ namespace GameOfLife
                 }
 
                 // checking is cell already checked and negative of cell because checking if only dead cell can be born                
-                bool condition = !_tmpCheckedCell.Any(item => item.X == tmpX && item.Y == tmpY) && !IsCellExist(tmpX, tmpY);
+                bool condition = !_tmpCheckedCell.Contains(new Cell() { X = tmpX, Y = tmpY }) && !IsCellExist(tmpX, tmpY);
 
                 // mark tmpX tmpY as cell that we already checked
                 _tmpCheckedCell.Add(new Cell() { X = tmpX, Y = tmpY });
@@ -367,9 +382,8 @@ namespace GameOfLife
         private void AddCellToNextStateKillLife(Cell cell)
         {
             // if not contain cell then add cell to queue
-            if (!_nextStateKillLife.Any(item => item.X == cell.X && item.Y == cell.Y))
+            if (!_nextStateKillLife.Contains(new Cell() { X = cell.X, Y = cell.Y }))
                 _nextStateKillLife.Enqueue(cell);
-
         }
 
         /// <summary>
@@ -379,7 +393,7 @@ namespace GameOfLife
         private void AddCellToNextStateGiveLife(Cell cell)
         {
             // if not contain cell then add cell to queue
-            if (!_nextStateGiveLife.Any(item => item.X == cell.X && item.Y == cell.Y))
+            if (!_nextStateGiveLife.Contains(new Cell() { X = cell.X, Y = cell.Y }))
                 _nextStateGiveLife.Enqueue(cell);
         }
     }

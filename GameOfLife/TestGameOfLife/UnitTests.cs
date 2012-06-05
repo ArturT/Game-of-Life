@@ -134,5 +134,23 @@ namespace TestGameOfLife
 
             Assert.AreEqual(4, b.CountCells());
         }
+
+        [TestMethod]
+        public void ShouldCellsBeEqualWhenHaveTheSameCoordinates()
+        {
+            Cell c1 = new Cell() { X = 1, Y = 2 };
+            Cell c2 = new Cell() { X = 1, Y = 2 };
+
+            Assert.AreEqual(c1, c2);
+        }
+                
+        [TestMethod]
+        public void ShouldCellsBeNotEqualWhenHaveDifferentCoordinates()
+        {
+            Cell c1 = new Cell() { X = 1, Y = 2 };
+            Cell c2 = new Cell() { X = 1, Y = 3 };
+
+            Assert.AreNotEqual(c1, c2);
+        }
     }
 }

@@ -93,16 +93,17 @@ namespace GameOfLife
 
 
             // run game in infinity loop
-            //b.PlayGame(timeSleep: 250, displayCurrentCoordinates: false);
+            b.PlayGame(timeSleep: 250, displayCurrentCoordinates: false);
 
 
 
-            // shows amount of cells at step
-            for (int i = 0; i < 100; i++)
-            {
-                b.NextState();
-                Console.WriteLine("Step " + i + ", Cells on board: " + b.CountCells() + ", Recursion: " + b.CounterMethod_GiveLifeToNeighboursIfPossible);
-            }
+            // shows amount of cells and recursion at step
+            //for (int i = 0; i < 100; i++)
+            //{
+            //    b.NextState();
+            //    Console.WriteLine("Step " + i + ", Cells on board: " + b.CountCells() + ", Recursion: " + b.CounterMethod_GiveLifeToNeighboursIfPossible);
+            //}
+
 
 
             Console.ReadKey();
